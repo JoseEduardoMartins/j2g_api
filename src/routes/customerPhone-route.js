@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 //controller
 const controller = require('../controllers/customerPhone-controller');
-//utils
-//const authService = require('../services/auth-service');
 //methods get
 router.get('/get', controller.get);
 router.get('/getById', controller.getById);

@@ -1,4 +1,6 @@
 'use strict';
+//imports
+const {phone} = require('phone')
 //repository
 const repository = require('../repository/customerPhone');
 //METHODS GET
@@ -37,21 +39,19 @@ exports.set = async (req, res, next) => {
 //METHODS PUT
 exports.update = async (req, res, next) => {
   try {
-		const { number } = req.body;
-		// data validation
-		const contract = new ValidationContract()
-		contract.isPhoneNumber(number.number, 'Number invalido!')
-		if(!contract.isValid()) return res.status(400).send({ message: contract.errors() }).end()
+		const { number_id, company_id, company_phone } = req.body;
+		const phoneValidate = phone(company_phone);
+
+		if(!phoneValidate.isValid) res.status(400).send({ error })
 
 		await repository.update({
-			id_number: number.id_number,
-			id_company: number.id_company,
-			number: number.number.replaceAll(" ", "").replaceAll("-", ""),
+			number_id: number_id,
+			company_id: company_id,
+			company_phone: phoneValidate.phoneNumber,
 		});
 
 		res.status(200).send({ message: 'Requisição realizada com sucesso!' });
-	} catch (e) {
-		res.status(400).send({ e, message: 'Falha ao processar sua requisição' });
+	} catch (error) {
+		res.status(400).send({ error });
 	}
 };
-//METHODS DELETE

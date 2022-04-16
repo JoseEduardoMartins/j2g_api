@@ -11,7 +11,7 @@ const authService = require('../services/auth-service');
 //METHODS GET
 exports.get = async (req, res, next) => {
   try {
-			const customers = await repository.selectAll();
+			const customers = await repository.select();
 			res.status(200).send({ customers });
   } catch (error) {
       res.status(400).send({ error });
@@ -95,15 +95,4 @@ exports.update = async (req, res, next) => {
   } catch (error) {
       res.status(400).send({ error });
   }
-};
-//METHODS DELETE
-exports.delete = async (req, res, next) => {
-  try {
-		const { customer_id } = req.body;
-		await repository.delete(customer_id);
-
-		res.status(200).send({ message: 'Requisição realizada com sucesso!' });
-} catch (error) {
-		res.status(400).send({ error });
-}
 };

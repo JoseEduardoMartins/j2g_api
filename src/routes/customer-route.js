@@ -15,7 +15,5 @@ router.post('/set', controller.set);
 router.post('/authenticate', controller.authenticate);
 // REQUEST PUT
 router.put('/update', controller.update);
-// REQUEST DELETE
-router.delete('/delete', controller.delete);
 
 module.exports = router;

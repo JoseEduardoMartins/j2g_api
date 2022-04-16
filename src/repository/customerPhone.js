@@ -37,12 +37,3 @@ exports.update = async (customer_phone) => {
 			});
 	});
 };
-exports.delete = async (customer_phone_id) => {
-	return new Promise((resolve, reject) => {
-			db.query('DELETE FROM tb_customer WHERE customer_phone_id = ?',
-			[customer_phone_id],
-			(err, result) => {
-					return err ? reject(err) : resolve(result);
-			});
-	});
-};
