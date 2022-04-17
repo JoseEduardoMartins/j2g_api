@@ -33,8 +33,8 @@ exports.insert = async (customer_user) => {
 //UPDATES
 exports.update = async (customer_user) => {
 	return new Promise((resolve, reject) => {
-			db.query('UPDATE tb_customer SET customer_id WHERE customer_user_id = ?',
-			[customer_user.customer_id, customer_user.customer_user_id],
+			db.query('UPDATE tb_customer_user SET customer_id = ?, customer_user_login = ?, customer_user_password = ?, customer_user_type = ? WHERE customer_user_id = ?',
+			[customer_user.customer_id, customer_user.customer_user_login, customer_user.customer_user_password, customer_user.customer_user_type, customer_user.customer_user_id],
 			(err, result) => {
 					return err ? reject(err) : resolve(result);
 			});

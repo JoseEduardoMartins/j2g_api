@@ -10,6 +10,7 @@ const app = express();
 const customerRoutes = require('./routes/customer-route');
 const customerPhoneRoutes = require('./routes/customerPhone-route');
 const customerEmailRoutes = require('./routes/customerEmail-route');
+const customerUserRoutes = require('./routes/customerUser-route');
 
 app.use(bodyParser.json({
     limit: '5mb'
@@ -31,5 +32,6 @@ app.use((req, res, next) => {
 app.use('/customer', customerRoutes);
 app.use('/customerPhone', customerPhoneRoutes);
 app.use('/customerEmail', customerEmailRoutes);
+app.use('/customerUser', customerUserRoutes);
 
 module.exports = app;

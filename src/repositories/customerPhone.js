@@ -30,8 +30,8 @@ exports.insert = async (customer_phone) => {
 };
 exports.update = async (customer_phone) => {
 	return new Promise((resolve, reject) => {
-			db.query('UPDATE tb_customer SET customer_id WHERE customer_phone_id = ?',
-			[customer_phone.customer_id, customer_phone.customer_phone_id],
+			db.query('UPDATE tb_customer_phone SET customer_phone = ? WHERE customer_phone_id = ?',
+			[customer_phone.customer_phone, customer_phone.customer_phone_id],
 			(err, result) => {
 					return err ? reject(err) : resolve(result);
 			});

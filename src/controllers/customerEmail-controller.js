@@ -2,12 +2,11 @@
 //imports
 const emailValidator = require("email-validator");
 //repository
-const repository = require('../repository/customerEmail');
-//utils
-const ValidationContract = require('../validators/validator');
+const repository = require('../repositories/customerEmail');
 //METHODS GET
 exports.get = async (req, res, next) => {
   try {
+		console.log('adasddsa');
 		const emails = await repository.select();
 		res.status(200).send({ emails });
   } catch (error) {

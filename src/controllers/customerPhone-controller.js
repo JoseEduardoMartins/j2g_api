@@ -2,7 +2,7 @@
 //imports
 const {phone} = require('phone')
 //repository
-const repository = require('../repository/customerPhone');
+const repository = require('../repositories/customerPhone');
 //METHODS GET
 exports.get = async (req, res, next) => {
 		try {
@@ -39,14 +39,13 @@ exports.set = async (req, res, next) => {
 //METHODS PUT
 exports.update = async (req, res, next) => {
   try {
-		const { number_id, company_id, company_phone } = req.body;
+		const { company_phone_id, company_phone } = req.body;
 		const phoneValidate = phone(company_phone);
 
 		if(!phoneValidate.isValid) res.status(400).send({ error })
 
 		await repository.update({
-			number_id: number_id,
-			company_id: company_id,
+			company_phone_id,
 			company_phone: phoneValidate.phoneNumber,
 		});
 

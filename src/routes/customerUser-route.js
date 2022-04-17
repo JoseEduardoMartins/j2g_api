@@ -3,13 +3,13 @@
 const express = require('express');
 const router = express.Router();
 //controller
-const controller = require('../controllers/customerEmail-controller');
-//ROUTE GET
+const controller = require('../controllers/customerUser-controller');
+//ROUTES GET
 router.get('/get', controller.get);
 router.get('/getById', controller.getById);
-//ROUTE POT
+//ROUTES POST
 router.post('/set', controller.set);
-//ROUTE PUT
+//ROUTES PUT
 router.put('/update', controller.update);
 //export
 module.exports = router;
