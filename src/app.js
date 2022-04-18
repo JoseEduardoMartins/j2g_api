@@ -11,6 +11,7 @@ const customerRoutes = require('./routes/customer-route');
 const customerPhoneRoutes = require('./routes/customerPhone-route');
 const customerEmailRoutes = require('./routes/customerEmail-route');
 const customerUserRoutes = require('./routes/customerUser-route');
+const companyRoutes = require('./routes/company-route');
 
 app.use(bodyParser.json({
     limit: '5mb'
@@ -33,5 +34,6 @@ app.use('/customer', customerRoutes);
 app.use('/customerPhone', customerPhoneRoutes);
 app.use('/customerEmail', customerEmailRoutes);
 app.use('/customerUser', customerUserRoutes);
+app.use('/company', companyRoutes);
 
 module.exports = app;
