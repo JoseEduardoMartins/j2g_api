@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 //controller
-const controller = require('../controllers/company-controller');
+const controller = require('../controllers/companyInteraction-controller');
 //ROUTES GET
 router.get('/get', controller.get);
 router.get('/getById', controller.getById);
