@@ -2,10 +2,11 @@
 //imports
 const validator = require('../services/validator-service');
 //repository
-const repository = require('../repositories/company');
-//METHODS GET 
+const repository = require('../repositories/customerUser');
+//METHODS GET
 exports.get = async (req, res, next) => {
 	try {
+		console.log('dfds');
 		const customer_phones = await repository.select();
 		res.status(200).send({ customer_phones });
 	} catch (error) {
