@@ -10,86 +10,86 @@ const validator = require('../services/validator-service');
 const authService = require('../services/auth-service');
 //METHODS GET
 exports.get = async (req, res, next) => {
-  try {
-			const customers = await repository.select();
-			res.status(200).send({ customers });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+	try {
+		const customers = await repository.select();
+		res.status(200).send({ customers });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };
 exports.getById = async (req, res, next) => {
-  try {
-			const { customer_id } = req.body;
-      const customer = await repository.selectById( customer_id );
-      res.status(200).send({ customer });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+	try {
+		const { customer_id } = req.body;
+		const customer = await repository.selectById( customer_id );
+		res.status(200).send({ customer });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };
 //METHODS POST
 exports.set = async (req, res, next) => {
-  try {
-      const { name, tax_id, login, password, confirmPassword } = req.body;
-			// data validation
-			if (validator.isCpfOrCnpj(tax_id)) return res.status(400).send({  message: 'Tax id invalido!' }).end()
-			if (validator.isEqualFields(password, confirmPassword)) return res.status(400).send({  message: 'As senhas estão diferentes!' }).end()
-			if (validator.isPassword(password)) return res.status(400).send({  message: 'A senha deve conter nominimo 8 caracteres, letras(maiusculas e minusculas) e numeros!' }).end()
+	try {
+		const { name, tax_id, login, password, confirmPassword } = req.body;
+		// data validation
+		if (validator.isCpfOrCnpj(tax_id)) return res.status(400).send({ message: 'Tax id invalido!' }).end();
+		if (password !== confirmPassword) return res.status(400).send({ message: 'As senhas estão diferentes!' }).end();
+		if (validator.isPassword(password)) return res.status(400).send({ message: 'A senha deve conter no minimo 8 caracteres, letras(maiusculas e minusculas) e numeros!' }).end();
 
-      const id_customer = await repository.insert({
-				name: name,
-				tax_id: tax_id.replaceAll(".","").replaceAll("/", "").replaceAll("-", ""),
-				login: login,
-				password: md5(password + global.SALT_KEY),
-				isActive: 1
-			});
+		const id_customer = await repository.insert({
+			name: name,
+			tax_id: tax_id.replaceAll(".","").replaceAll("/", "").replaceAll("-", ""),
+			login: login,
+			password: md5(password + global.SALT_KEY),
+			isActive: 1
+		});
 
-      res.status(200).send({ id_customer });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+		res.status(200).send({ id_customer });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };
 exports.authenticate = async (req, res, next) => {
 	try {
-			const {login, password} = req.body;
+		const {login, password} = req.body;
 
-			const customer = await repository.selectByLogin(login);
+		const customer = await repository.selectByLogin(login);
 
-			if (!customer) return res.status(400).send({code: 10, message: 'Usuário ou senha inválidos' });
+		if (!customer) return res.status(400).send({code: 10, message: 'Usuário ou senha inválidos' });
 
-			if (customer.password !== md5(password + global.SALT_KEY)) return res.status(400).send({code: 10, message: 'Usuário ou senha inválidos' });
+		if (customer.password !== md5(password + global.SALT_KEY)) return res.status(400).send({code: 10, message: 'Usuário ou senha inválidos' });
 
-			const token = await authService.generateToken({
-					id_customer: customer.id_customer
-			});
+		const token = await authService.generateToken({
+				id_customer: customer.id_customer
+		});
 
-			res.status(200).send({code: 30, id_customer: customer.id_customer, token: token, message: 'Autenticação realizada com sucesso!' });
+		res.status(200).send({code: 30, id_customer: customer.id_customer, token: token, message: 'Autenticação realizada com sucesso!' });
 	} catch (error) {
-			res.status(400).send({ error });
+		res.status(400).send({ error });
 	}
 };
 //METHODS PUT
 exports.update = async (req, res, next) => {
-  try {
-      const { customer_id, name, tax_id, login, password, confirmPassword } = req.body;
-			// data validation
-			const contract = new ValidationContract()
-			contract.isCpfOrCnpj(tax_id, 'Tax id invalido!')
-			contract.isEqualFields(password, confirmPassword, 'As senhas estão diferentes!')
-			contract.isPassword(password, 'A senha deve conter nominimo 8 caracteres, letras(maiusculas e minusculas) e numeros!')
-			// if invalid data
-			if(!contract.isValid()) return res.status(400).send({ error: contract.errors() }).end()
+	try {
+		const { customer_id, name, tax_id, login, password, confirmPassword } = req.body;
+		// data validation
+		const contract = new ValidationContract()
+		contract.isCpfOrCnpj(tax_id, 'Tax id invalido!')
+		contract.isEqualFields(password, confirmPassword, 'As senhas estão diferentes!')
+		contract.isPassword(password, 'A senha deve conter nominimo 8 caracteres, letras(maiusculas e minusculas) e numeros!')
+		// if invalid data
+		if(!contract.isValid()) return res.status(400).send({ error: contract.errors() }).end()
 
-      await repository.update({
-				customer_id,
-				name,
-				tax_id: tax_id.replaceAll(".","").replaceAll("/", "").replaceAll("-", ""),
-				login,
-				password: md5(password + global.SALT_KEY),
-				isActive: 1
-			});
+		await repository.update({
+			customer_id,
+			name,
+			tax_id: tax_id.replaceAll(".","").replaceAll("/", "").replaceAll("-", ""),
+			login,
+			password: md5(password + global.SALT_KEY),
+			isActive: 1
+		});
 
-      res.status(200).send({ message: 'Requisição realizada com sucesso!' });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+		res.status(200).send({ message: 'Requisição realizada com sucesso!' });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };

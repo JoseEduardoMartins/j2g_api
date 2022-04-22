@@ -49,5 +49,5 @@ exports.isEmail = (value) => {
 
 exports.isPassword = (value) => {
 	const reg = new RegExp(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/);
-	return (!reg.test(value)) ? false : true;
+	return (reg.test(value)) ? false : true;
 }

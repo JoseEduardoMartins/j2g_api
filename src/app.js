@@ -6,15 +6,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 
-//carrega as rotas
-const customerRoutes = require('./routes/customer-route');
-const customerPhoneRoutes = require('./routes/customerPhone-route');
-const customerEmailRoutes = require('./routes/customerEmail-route');
-const customerUserRoutes = require('./routes/customerUser-route');
-const companyRoutes = require('./routes/company-route');
-const companyContactRoutes = require('./routes/companyContact-route');
-const companyInteractionRoutes = require('./routes/companyInteraction-route');
-
 app.use(bodyParser.json({
     limit: '5mb'
 }));
@@ -32,12 +23,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/customer', customerRoutes);
-app.use('/customerPhone', customerPhoneRoutes);
-app.use('/customerEmail', customerEmailRoutes);
-app.use('/customerUser', customerUserRoutes);
-app.use('/company', companyRoutes);
-app.use('/companyContact', companyContactRoutes);
-app.use('/companyInteraction', companyInteractionRoutes);
+app.use('/customer', require('./routes/customer-route'));
+app.use('/customerAddress', require('./routes/customerAddress-route'));
+app.use('/customerPhone', require('./routes/customerPhone-route'));
+app.use('/customerEmail', require('./routes/customerEmail-route'));
+app.use('/customerUser', require('./routes/customerUser-route'));
+
+app.use('/company', require('./routes/company-route'));
+app.use('/companyContact', require('./routes/companyContact-route'));
+app.use('/companyInteraction', require('./routes/companyInteraction-route'));
 
 module.exports = app;
