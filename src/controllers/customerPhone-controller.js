@@ -1,6 +1,6 @@
 'use strict';
 //imports
-const {phone} = require('phone')
+const { phone } = require('phone')
 //repository
 const repository = require('../repositories/customerPhone');
 //METHODS GET
@@ -23,18 +23,18 @@ exports.getById = async (req, res, next) => {
 };
 //METHODS POST
 exports.set = async (req, res, next) => {
-  try {
-      const { customer_id, customer_phone } = req.body;
+	try {
+		const { customer_id, customer_phone } = req.body;
 
-      const id_number = await repository.insert({
+		const id_number = await repository.insert({
 				customer_id,
 				customer_phone: customer_phone.replaceAll("+","").replaceAll(" ", "").replaceAll("-", "").replaceAll("(", "").replaceAll(")", ""),
 			});
 
-      res.status(200).send({ id_number });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+		res.status(200).send({ id_number });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };
 //METHODS PUT
 exports.update = async (req, res, next) => {

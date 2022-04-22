@@ -13,13 +13,13 @@ exports.get = async (req, res, next) => {
 	}
 };
 exports.getById = async (req, res, next) => {
-  try {
-			const { customer_phone_id } = req.body;
-      const customer_phone = await repository.selectById( customer_phone_id );
-      res.status(200).send({ customer_phone });
-  } catch (error) {
-      res.status(400).send({ error });
-  }
+	try {
+		const { customer_phone_id } = req.body;
+		const customer_phone = await repository.selectById( customer_phone_id );
+		res.status(200).send({ customer_phone });
+	} catch (error) {
+		res.status(400).send({ error });
+	}
 };
 //METHODS POST
 exports.set = async (req, res, next) => {
